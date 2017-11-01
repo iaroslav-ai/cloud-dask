@@ -1,0 +1,12 @@
+[
+  {
+    "Means of access": "ssh_key_access",
+    "Access config": {
+      "Secret key": "/home/iaroslav/.ssh/id_rsa"
+    },
+    "IPs": ["192.168.0.88"],
+    "Type" : "CPUx86",
+    "Workers" : 4,
+    "Provider configuration": null
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "Access config": {
+      "Secret key": "/home/iaroslav/.ssh/id_rsa"
+    },
+    "Docker image": "iaroslavai/daskbase",
+    "IP": "192.168.0.88",
+    "Means of access": "ssh_key_access",
+    "Role": "scheduler",
+    "Scheduler": "192.168.0.88",
+    "Type": "CPUx86",
+    "Workers": 4
+  },
+  {
+    "Access config": {
+      "Secret key": "/home/iaroslav/.ssh/id_rsa"
+    },
+    "Docker image": "iaroslavai/daskbase",
+    "IP": "192.168.0.88",
+    "Means of access": "ssh_key_access",
+    "Role": "worker",
+    "Scheduler": "192.168.0.88",
+    "Type": "CPUx86",
+    "Workers": 4
+  }
+]
