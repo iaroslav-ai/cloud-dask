@@ -13,22 +13,40 @@ import copy
 import subprocess
 
 def ssh_key_access(config, ip, command):
+    """
+    It is assumed that you have already installed the identity on
+    the machine 'ip', so that you can use passwordless ssh.
+    You make this happen using
+
+    ```bash
+    ssh-copy-id IP_OF_SOME_MACHINE
+    ```
+    """
+
+    address = ip
+
+    if 'User' in config:
+        address = config['User'] + "@" + ip
+
+    # open ssh connection
     sshProcess = subprocess.Popen(
-        ('ssh %s' % ip),
+        ('ssh -oStrictHostKeyChecking=no %s' % address),
         shell=True,
         stdin = subprocess.PIPE,
         stdout = subprocess.PIPE,
         universal_newlines = True,
         bufsize = 0
     )
-    sshProcess.stdin.write(command + " \n")
-    sshProcess.communicate()
 
+    # execute command
+    sshProcess.stdin.write(command + " \n")
+
+    # wait for command to finish
+    sshProcess.communicate()
 
 access = {
     'ssh_key_access': ssh_key_access
 }
-
 
 class DaskManager():
 
@@ -189,6 +207,9 @@ class DaskManager():
 
         self.notify("Removed the docker cluster infrastrucutre.")
 
+    def clear_dask(self):
+        self.remove_dask()
+        os.remove(self.hw_name())
 
     def reset_dask(self):
         self.remove_dask()
@@ -211,6 +232,8 @@ if __name__ == "__main__":
     parser.add_argument(
         '--remove', action='store_true', help="Stop and remove all containers on the cluster, including dask.")
     parser.add_argument(
+        '--clear', action='store_true', help="Same as --remove, except dask.json is also removed.")
+    parser.add_argument(
         '--reset', action='store_true', help="Remove all containers, start dask anew.")
     parser.add_argument(
         '--mainip', action='store_true', help="Show the IP of a Dask scheduler for the cluster.")
@@ -231,6 +254,9 @@ if __name__ == "__main__":
 
     if args.remove:
         manager.remove_dask()
+
+    if args.clear:
+        manager.clear_dask()
 
     if args.reset:
         manager.reset_dask()

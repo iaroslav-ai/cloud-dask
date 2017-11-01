@@ -41,6 +41,16 @@ sudo service docker start
 sudo docker run hello-world
 ```
 
+Also, make sure that you can run docker from command line without sudo.
+You can do that by adding current user to the 'docker' group:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+You might need to restart your terminal session to see changes take 
+action.
+
 3. You know ip's of other machines.
 
 On Ubuntu, you can get ip of a machine using 

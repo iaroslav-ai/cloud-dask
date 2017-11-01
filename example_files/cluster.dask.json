@@ -1,8 +1,6 @@
 [
   {
-    "Access config": {
-      "Secret key": "/home/iaroslav/.ssh/id_rsa"
-    },
+    "Access config": null,
     "Docker image": "iaroslavai/daskbase",
     "IP": "192.168.0.88",
     "Means of access": "ssh_key_access",
@@ -12,9 +10,7 @@
     "Workers": 4
   },
   {
-    "Access config": {
-      "Secret key": "/home/iaroslav/.ssh/id_rsa"
-    },
+    "Access config": null,
     "Docker image": "iaroslavai/daskbase",
     "IP": "192.168.0.88",
     "Means of access": "ssh_key_access",
