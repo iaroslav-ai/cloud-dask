@@ -228,12 +228,12 @@ def main():
     parser.add_argument(
         '--create', action='store_true', help="1. Request cloud instances. You can specify provider with "
                                               "--provider parameter, and non - standard configuration for"
-                                              "provider using --config. After you did this, you can use"
+                                              "provider using --settings. After you did this, you can use"
                                               "xdask to set up dask cluster.")
     parser.add_argument(
-        '--config', action='store_true', help="Setup access, and store information to .hardware.json.")
+        '--config', action='store_true', help="2. Setup access, and store information to .hardware.json.")
     parser.add_argument(
-        '--kill', action='store_true', help="2. Destroy cluster instance - delete spot request, which "
+        '--kill', action='store_true', help="3. Destroy cluster instance - delete spot request, which "
                                             "will also terminate all machines.")
     parser.add_argument(
         '--name', nargs="?", default='cluster', type=str, help="Name of the cluster instance. You can create multiple"
@@ -254,7 +254,7 @@ def main():
     if args.create:
         manager.create()
 
-    if args.config:
+    if args.create:
         manager.configure()
 
     if args.kill:

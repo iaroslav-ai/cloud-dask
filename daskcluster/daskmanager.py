@@ -75,7 +75,7 @@ class DaskManager():
     def notify(self, message):
         print(message)
 
-    def config(self, docker_image):
+    def create(self, docker_image):
         # make the json file for dask configuration
         self.notify("Start configuration of dask ...")
 
@@ -131,13 +131,13 @@ class DaskManager():
 
         self.notify("Created configuration.")
 
-    def check_configured(self):
+    def check_created(self):
         dask_config = self.dask_name()
 
         if os.path.exists(dask_config):
             self.cluster_dask = json.load(open(dask_config))
         else:
-            raise ValueError("Please configure the dask cluster first (use --config for that)")
+            raise ValueError("Please create the dask cluster first (use --create for that)")
 
     def run_command_on_machines(self, machines, command, n_jobs=None):
         commands = []
@@ -160,8 +160,8 @@ class DaskManager():
             for acc_func, acc_config, ip, command in commands
         )
 
-    def start_dask(self):
-        self.check_configured()
+    def config_dask(self):
+        self.check_created()
         self.notify("Run update for docker containers ...")
 
         # update docker on all machines
@@ -193,7 +193,7 @@ class DaskManager():
         self.notify("Started docker cluster. Scheduler is %s:8786" % scheduler_ip)
 
     def remove_dask(self):
-        self.check_configured()
+        self.check_created()
         self.notify("Removing all containers...")
 
         # Destroy all containers
@@ -209,10 +209,10 @@ class DaskManager():
 
     def reset_dask(self):
         self.remove_dask()
-        self.start_dask()
+        self.config_dask()
 
     def show_ip(self):
-        self.check_configured()
+        self.check_created()
         ip = self.cluster_dask[0]['IP']
         self.notify("Scheduler ip: %s" % ip)
         return ip
@@ -222,14 +222,15 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--config', action='store_true', help="1. Creates dask configuration file. Specify --image flag "
+        '--create', action='store_true', help="1. Creates dask configuration file. Specify --image flag "
                                               "which specifies what docker image to use (eg. iaroslavai/daskbase)")
 
     parser.add_argument(
-        '--reset', action='store_true', help="2.a. Remove all containers, start dask anew. Equivalent to calling "
-                                             "--remove and then --start.")
+        '--config', action='store_true', help="2.a. Start the dask connections on cluster.")
+
     parser.add_argument(
-        '--start', action='store_true', help="2.b. Start the dask connections on cluster.")
+        '--reset', action='store_true', help="2.b. Remove all containers, start dask anew. Equivalent to calling "
+                                             "--remove and then --config.")
 
     parser.add_argument(
         '--mainip', action='store_true', help="3. Show the IP of a Dask scheduler for the cluster.")
@@ -248,11 +249,16 @@ def main():
 
     manager = DaskManager(args.name)
 
-    if args.config:
-        manager.config(args.image)
+    if args.create:
+        if args.image is None:
+            print("ERROR:")
+            print("Please specify which docker image you would like to use with "
+                  "--image key. For example: xdask --create --image iaroslavai/daskbase")
+            return
+        manager.create(args.image)
 
-    if args.start:
-        manager.start_dask()
+    if args.config:
+        manager.config_dask()
 
     if args.remove:
         manager.remove_dask()
