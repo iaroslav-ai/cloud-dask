@@ -30,7 +30,7 @@ See the regions [here](http://docs.aws.amazon.com/general/latest/gr/rande.html#e
 4. Copy a few parameters into the 'defaults' folder, into 'ec2_defaults.json'.
 In particular:
 
-* "ami_image_id": ID of ANI image with docker installed in it.
+* "ami_image_id": ID of AMI image with docker installed in it.
 * "aws_access_key": File name of RSA key that you use to log in 
 to created AWS instances.
 * "aws_key_name": Name of the key as it is in AWS. Normally should be 

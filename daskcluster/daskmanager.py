@@ -2,13 +2,9 @@
 """
 
 from joblib import Parallel, delayed
-from pprint import pprint
 import os
-import time
-from tqdm import tqdm
 import json
 import argparse
-import abc
 import copy
 import subprocess
 
@@ -222,21 +218,27 @@ class DaskManager():
         return ip
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--config', action='store_true', help="Creates dask configuration file.")
+        '--config', action='store_true', help="1. Creates dask configuration file. Specify --image flag "
+                                              "which specifies what docker image to use (eg. iaroslavai/daskbase)")
+
     parser.add_argument(
-        '--start', action='store_true', help="Start the dask connections on cluster.")
+        '--reset', action='store_true', help="2.a. Remove all containers, start dask anew. Equivalent to calling "
+                                             "--remove and then --start.")
+    parser.add_argument(
+        '--start', action='store_true', help="2.b. Start the dask connections on cluster.")
+
+    parser.add_argument(
+        '--mainip', action='store_true', help="3. Show the IP of a Dask scheduler for the cluster.")
+
     parser.add_argument(
         '--remove', action='store_true', help="Stop and remove all containers on the cluster, including dask.")
     parser.add_argument(
-        '--clear', action='store_true', help="Same as --remove, except dask.json is also removed.")
-    parser.add_argument(
-        '--reset', action='store_true', help="Remove all containers, start dask anew.")
-    parser.add_argument(
-        '--mainip', action='store_true', help="Show the IP of a Dask scheduler for the cluster.")
+        '--clear', action='store_true', help="4. Same as --remove, except dask.json is also removed.")
+
     parser.add_argument(
         '--image', nargs="?", default=None, type=str, help="Command to execute on every node of cluster.")
     parser.add_argument(
@@ -263,3 +265,6 @@ if __name__ == "__main__":
 
     if args.mainip:
         manager.show_ip()
+
+if __name__ == "__main__":
+    main()

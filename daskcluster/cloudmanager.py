@@ -20,10 +20,8 @@ IAM images should be based on Ubuntu 16.04 image.
 
 import boto3
 import subprocess
-from pprint import pprint
 import os
 import time
-from tqdm import tqdm
 from joblib import Parallel, delayed
 import json
 import argparse
@@ -88,13 +86,21 @@ class EC2(ClusterInstance):
         super(EC2, self).__init__(name)
         self.cluster = {}
 
+
+
         # load cluster info
         if os.path.exists(self.hwfile()):
             self.cluster = json.load(open(self.hwfile(), 'r'))
             self.provider = self.cluster[0]["Provider configuration"]
             self.config = self.provider["Settings"]
         else:
-            self.config = json.load(open(os.path.join('defaults', 'ec2_defaults.json')))
+            if not os.path.exists('ec2_defaults.json'):
+                self.notify("Defaults json for EC2 does not exist. Creating it now. "
+                            "Please enter correct fields in this json ('ec2_defaults.json').")
+                from daskcluster.defaults import ec2_defaults
+                json.dump(ec2_defaults, open('ec2_defaults.json', 'w'), sort_keys=True, indent=2)
+
+            self.config = json.load(open('ec2_defaults.json'))
 
         userconfig = json.loads(config)
 
@@ -137,7 +143,7 @@ class EC2(ClusterInstance):
         }
 
         json.dump([hwjson], open(self.hwfile(), 'w'), indent=2, sort_keys=True)
-        self.cluster = hwjson[0]
+        self.cluster = [hwjson]
         self.notify("Started the cluster instances. ")
 
     def configure(self):
@@ -216,17 +222,22 @@ providers = {
     EC2.__name__: EC2
 }
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--create', action='store_true', help="Request cloud instances.")
+        '--create', action='store_true', help="1. Request cloud instances. You can specify provider with "
+                                              "--provider parameter, and non - standard configuration for"
+                                              "provider using --config. After you did this, you can use"
+                                              "xdask to set up dask cluster.")
     parser.add_argument(
         '--config', action='store_true', help="Setup access, and store information to .hardware.json.")
     parser.add_argument(
-        '--kill', action='store_true', help="Destroy cluster instance.")
+        '--kill', action='store_true', help="2. Destroy cluster instance - delete spot request, which "
+                                            "will also terminate all machines.")
     parser.add_argument(
-        '--name', nargs="?", default='cluster', type=str, help="Name of the cluster instance.")
+        '--name', nargs="?", default='cluster', type=str, help="Name of the cluster instance. You can create multiple"
+                                                               "cluster instances by speicfying different names.")
     parser.add_argument(
         '--provider', nargs="?", default='EC2', type=str, help="Name of provider of cloud instances.")
     parser.add_argument(
@@ -248,3 +259,6 @@ if __name__ == "__main__":
 
     if args.kill:
         manager.kill()
+
+if __name__ == "__main__":
+    main()
