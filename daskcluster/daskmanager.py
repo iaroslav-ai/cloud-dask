@@ -203,9 +203,9 @@ class DaskManager():
 
         self.notify("Removed the docker cluster infrastrucutre.")
 
-    def clear_dask(self):
+    def kill_dask(self):
         self.remove_dask()
-        os.remove(self.hw_name())
+        os.remove(self.dask_name())
 
     def reset_dask(self):
         self.remove_dask()
@@ -237,7 +237,7 @@ def main():
     parser.add_argument(
         '--remove', action='store_true', help="Stop and remove all containers on the cluster, including dask.")
     parser.add_argument(
-        '--clear', action='store_true', help="4. Same as --remove, except dask.json is also removed.")
+        '--kill', action='store_true', help="4. Same as --remove, except dask.json is also removed.")
 
     parser.add_argument(
         '--image', nargs="?", default=None, type=str, help="Command to execute on every node of cluster.")
@@ -257,8 +257,8 @@ def main():
     if args.remove:
         manager.remove_dask()
 
-    if args.clear:
-        manager.clear_dask()
+    if args.kill:
+        manager.kill_dask()
 
     if args.reset:
         manager.reset_dask()
