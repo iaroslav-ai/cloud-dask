@@ -226,7 +226,7 @@ def main():
                                               "which specifies what docker image to use (eg. iaroslavai/daskbase)")
 
     parser.add_argument(
-        '--config', action='store_true', help="2.a. Start the dask connections on cluster.")
+        '--configure', action='store_true', help="2.a. Start the dask connections on cluster.")
 
     parser.add_argument(
         '--reset', action='store_true', help="2.b. Remove all containers, start dask anew. Equivalent to calling "
@@ -257,7 +257,7 @@ def main():
             return
         manager.create(args.image)
 
-    if args.config:
+    if args.configure:
         manager.config_dask()
 
     if args.remove:

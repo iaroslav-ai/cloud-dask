@@ -231,7 +231,7 @@ def main():
                                               "provider using --settings. After you did this, you can use"
                                               "xdask to set up dask cluster.")
     parser.add_argument(
-        '--config', action='store_true', help="2. Setup access, and store information to .hardware.json.")
+        '--configure', action='store_true', help="2. Setup access, and store information to .hardware.json.")
     parser.add_argument(
         '--kill', action='store_true', help="3. Destroy cluster instance - delete spot request, which "
                                             "will also terminate all machines.")
