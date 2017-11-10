@@ -254,7 +254,7 @@ def main():
     if args.create:
         manager.create()
 
-    if args.create:
+    if args.configure:
         manager.configure()
 
     if args.kill:

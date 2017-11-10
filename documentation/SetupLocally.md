@@ -51,6 +51,14 @@ sudo usermod -aG docker $USER
 You might need to restart your terminal session to see changes take 
 action.
 
+You might also see warnings
+
+Solve this with
+```bash
+sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+sudo chmod g+rwx "/home/$USER/.docker" -R
+```
+
 3. You know ip's of other machines.
 
 On Ubuntu, you can get ip of a machine using 
