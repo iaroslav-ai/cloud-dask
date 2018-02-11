@@ -17,6 +17,9 @@ user for yourself if you do not have one. Then go to security credentials,
 and create Access Key ID and Secret Access Key pair. Your will need this 
 for the next step.
 
+This tutorial was tested with user created by directly attaching the 
+existing policies. The `AdministratorAccess` was given to a user.
+
 3. Store your keys in ~/.aws/credentials:
 ```
 [default]
