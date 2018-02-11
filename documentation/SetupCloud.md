@@ -44,3 +44,10 @@ It is easiest to simply allow trafic from all prots to your machine in
 security group settings, so that everything works fine.
 * "iamfleetrole": To figure out IamFleetRole, go to IAM -> Roles and find 
 fleet role (or fleet tagging role - also works). 
+
+5. Create a cryptographic key if you do not have one. On Ubuntu, you can simply run this command:
+
+```bash
+ssh-keygen -t rsa
+```
+Please do not specify passphrase - this will break the automatization with xcloud.
