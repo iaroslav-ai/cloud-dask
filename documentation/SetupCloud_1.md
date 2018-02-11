@@ -30,8 +30,9 @@ region=YOUR_PREFERRED_REGION(eg us-east-1)
 
 See the regions [here](http://docs.aws.amazon.com/general/latest/gr/rande.html#ec2_region).
 
-4. Copy a few parameters into the 'defaults' folder, into 'ec2_defaults.json'.
-In particular:
+4. Create a new configuration json. For that, simply navigate to some folder
+where you wish to store your cluster settings, and run `xcloud` command without
+arguments. It will create `ec2_defaults.json` where you can set your own values.
 
 * "ami_image_id": ID of AMI image with docker installed in it.
 * "aws_access_key": File name of RSA key that you use to log in 
