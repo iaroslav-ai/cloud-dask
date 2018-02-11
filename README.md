@@ -29,7 +29,3 @@ It is suggested that you extend a base image [https://hub.docker.com/r/iaroslava
 3. Start cluster of machines with docker installed
 
 4. Create a cluster out of these machines and use it.
-
-Currently it still is ...
-
-![under construction.](https://iaroslav-ai.github.io/images/under_construction.svg)
