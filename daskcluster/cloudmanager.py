@@ -155,7 +155,7 @@ class EC2(ClusterInstance):
         # install public key for passwordless access
         commands = []
         for ip in ips:
-            command = 'ssh-copy-id -i /home/iaroslav/.ssh/id_rsa.pub -f -o "IdentityFile '+ self.config['aws_access_key']\
+            command = 'ssh-copy-id -i ~/.ssh/id_rsa.pub -f -o "IdentityFile '+ self.config['aws_access_key']\
                       +'" -o "StrictHostKeyChecking=no" ubuntu@' + ip
             commands.append(command)
 
